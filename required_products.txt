@@ -14,15 +14,7 @@
 #
 
 geode=1
-#coherence=
-#gemfire=
-#hadoop=
-#hazelcast=
-#hazelcast-enterprise=
-#jet=
-#jet-enterprise=
-#kafka=
-#none=1
-#pado=
-#snappydata=
-#spark=
+coherence=14
+gemfire=9
+hazelcast=5
+redis=7
