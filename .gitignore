@@ -21,7 +21,7 @@ lib
 plugins
 
 # PadoGrid workspace directories
-apps
+#apps
 clusters
 docker
 k8s

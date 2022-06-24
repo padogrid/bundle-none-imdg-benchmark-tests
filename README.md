@@ -1,99 +1,188 @@
-# Geode Bundle Template
+# IMDG Product Benchmart Tests
 
-This bundle serves as a template for creating a new Geode onlne bundle.
+This bundle provides step-by-step instructions for creating an local environment and conducting benchmark tests on all the PadoGrid supported IMDG products using the `perf_test` app.
 
 ## Installing Bundle
 
 ![PadoGrid](https://github.com/padogrid/padogrid/raw/develop/images/padogrid-3d-16x16.png) [*Driven by PadoGrid*](https://github.com/padogrid)
 
 ```bash
-install_bundle -download bundle-geode-template
+install_bundle -download bundle-none-imdg-benchmkark-tests
 ```
 
 ## Use Case
 
-If you are creating a new online bundle, then you can use this template to create your bundle repo. It includes all the required files with marked annotations for you to quickly start developing a new online bundle. Please follow the steps shown below.
+As of writing, PadoGrid supports four (4) IMDG products: Coherence, Geode/GemFire, Hazelcast, and Redis. This bundle creates a local environment in which you can conduct benchmark tests on all of these products. The test results will be consolidated in CSV files which you can analyze using your favorite spreadsheet application.
 
-## 1. Create Repo
+PadoGrid is already equipped with a benchmark app called `perf_test`, with which let you create and run custom test cases without coding. Creating a test environment with `perf_test` is quite simple and straight forward. This bundle provides step-by-step instructions along with some useful test cases that you can run with `perf_test`.
 
-Select **Use this template** button in the upper right coner to create your repo. Make sure to follow the bundle naming conventions described in the following link.
+![Bundle Template Diagram](/images/bundle-template.jpg)
 
-## 2. Checkout Repo in Workspace
+## Required Software
 
-```bash
-# PadoGrid 0.9.7+
-install_bundle -checkout <bundle-repo-name>
+- Padogrid 0.9.18+
+- Coherence 1.13.x, 1.14.x
+- Geode 1.x, GemFire 9.x
+- Hazelcast 3.x, 4.x, 5.x
+- Redis 6.x, 7.x
 
-# PadoGrid 0.9.6 and older
-install_bundle -download -workspace <bundle-repo-name>
-
-# Switch into the checked out bundle workspace
-switch_workspace <bundle-repo-name>
-```
-
-## 3. Update Files
-
-Update the files came with the template repo.
-
-- `pom.xml`
-- `assembly-descriptor.xml`
-- `.gitignore`
-- `README_HEADER.md` (Optional)
-- `README.md` (This file)
-- `README.TEMPLATE` (Remove it when done. See instructions below.)
-- `required_products.txt`
-
-### 3.1. pom.xml
-
-The `pom.xml` file contains instructions annocated with **@template**. Search **@template** and add your bundle specifics there.
-
-### 3.2 assembly-descriptor.xml
-
-This file creates a tarball that will be deployed when the user executes the `install_bundle -download` command. Search **@template** and add your bundle specifics there.
-
-### 3.3 .gitignore
-
-The `.gitignore` file lists workspace specific files to be excluded from getting checked in. Edit `.gitignore` and add new exludes or remove existing excludes.
-
-```bash
-vi .gitignore
-```
-
-Make sure to comment out your workspace directories (components) so that they can be included by `git`.
+## Bundle Contents
 
 ```console
-...
-# PadoGrid workspace directories
 apps
-clusters
-docker
-k8s
-pods
-...
+├── perf_test_coherence
+├── perf_test_geode
+├── perf_test_hazelcast
+└── perf_test_redis
 ```
 
-## 3.4. README_HEADER.md
+## Configuring Envrionment
 
-Enter a short description of your bundle in the `README_HEADER.md` file. This file content is displayed when you execute the `show_bundle -header` command. **Note that this file is optional.** If it does not exist, then the first paragraph of the `README.md` file is used instead.
-
-## 3.5. READEME.md (this file)
-
-Replace `README.md` with the README_TEMPLATE.md file. Make sure to remove `README_TEMPLATE.md` after you have replaced `READEME.md` with it.
+Create clusters you want to test. To be objective, each cluster should have the same number of members. The minimum number of members is six (6) due to the Redis minimum requirement of six (6) members per cluster with replicas of one (1).
 
 ```bash
-cp README_TEMPLATE.md README.md
-git rm README_TEMPLATE.md
+# Add 4 to the default Coherence cluster
+make_cluster -product coherence -cluster mycoherence
+add_member -cluster mycoherence -count 4
+
+# Add 4 to the default Hazelcast cluster
+make_cluster -product hazelcast -cluster myhz
+add_member -cluster myhz -count 4
+
+# Add 4 to the default Geode/GemFire cluster
+make_cluster -product geode -cluster mygeode
+add_member -cluster mygeode -count 4
+
+# The default Redis cluster in PadoGrid has 6 members
+make_cluster -product redis -cluster myredis
 ```
 
-Update the `READEME.md` file by following the instructions in that file.
+## Startup Sequence
 
-## 3.6. required_products.txt
+### 1. Coherence
 
-The `required_products.txt` file must include a list of required products and their versions. Its format is described in the following link.
+- Start cluster
 
-[Relaxed Bundle Naming Conventions](https://github.com/padogrid/padogrid/wiki/User-Bundle-Repos#relaxed-conventions)
+```bash
+switch_cluster -cluster mycoherence
+start_cluster
+```
 
-## 4. Develop and Test Bundle
+- Run `perf_test_coherence`
 
-You can freely make changes and test the bundle in the workspace. When you are ready to check in, you simply commit the changes using the `git commit` command. For new files, you will need to select only the ones that you want to check in using the `git status -u` and `git diff` commands. For those files that you do not want to check in, you can list them in the `.gitignore` file so that they do not get checked in accidentally.
+```bash
+# Run test_group 5 times. Each run generates a file in results/.
+cd_app perf_test_coherence/bin_sh
+for i in $(seq 5); do ./test_group -run; done
+```
+
+- Stop cluster
+
+```bash
+stop_cluster
+```
+
+### 2. Geode/GemFire
+
+- Start cluster
+
+```bash
+switch_cluster -cluster mygeode
+start_cluster
+```
+
+- Run `perf_test_geode`
+
+```bash
+# Run test_group 5 times. Each run generates a file in results/.
+cd_app perf_test_geode/bin_sh
+for i in $(seq 5); do ./test_group -run; done
+```
+
+- Stop cluster
+
+```bash
+stop_cluster
+```
+
+### 3. Hazelcast
+
+- Start cluster
+
+```bash
+switch_cluster -cluster myhz
+start_cluster
+```
+
+- Run `perf_test_hazelcast`
+
+```bash
+# Run test_group 5 times. Each run generates a file in results/.
+cd_app perf_test_hazelcast/bin_sh
+for i in $(seq 5); do ./test_group -run; done
+```
+
+- Stop cluster
+
+```bash
+stop_cluster
+```
+
+### 4. Redis
+
+- Start cluster
+
+```bash
+switch_cluster -cluster myredis
+start_cluster
+```
+
+- Run `perf_test_geode`
+
+```bash
+# Run test_group 5 times. Each run generates a file in results/.
+cd_app perf_test_redis/bin_sh
+for i in $(seq 5); do ./test_group -run; done
+```
+
+- Stop cluster
+
+```bash
+stop_cluster
+```
+
+### 5. Consolidate test results
+
+- Change directory to any of the `perf_test` apps and run `create_csv -all`.
+
+```bash
+cd_app perf_test_geode/bin_sh
+./create_csv -all
+```
+
+Output:
+
+```console
+```
+
+- Open the consolidated CSV file in your spreadsheet application.
+
+```bash
+# macOS
+open /....
+```
+
+## Teardown
+
+```bash
+# Stop all running clusters in the workspace
+stop_workspace -all
+```
+
+## References
+
+1. Coherence `perf_test`, https://github.com/padogrid/padogrid/wiki/Coherence-perf_test-App
+1. Geode/GemFire `perf_test`, https://github.com/padogrid/padogrid/wiki/Geode-perf_test-App
+1. Hazelcast `perf_test`, https://github.com/padogrid/padogrid/wiki/Hazelcast-perf_test-App
+1. Redis `perf_test`, https://github.com/padogrid/padogrid/wiki/Redis-perf_test-App
 
