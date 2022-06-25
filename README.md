@@ -16,7 +16,7 @@ As of writing, PadoGrid supports four (4) IMDG products: Coherence, Geode/GemFir
 
 PadoGrid is already equipped with a benchmark app called `perf_test`, with which let you create and run custom test cases without coding. Creating a test environment with `perf_test` is quite simple and straight forward. This bundle provides step-by-step instructions along with some useful test cases that you can run with `perf_test`.
 
-![Bundle Template Diagram](/images/bundle-template.jpg)
+![Benchmark Clusters](images/benchmark-clusters.png)
 
 ## Required Software
 
@@ -36,9 +36,9 @@ apps
 └── perf_test_redis
 ```
 
-## Configuring Envrionment
+## Configuring Bundle Envrionment
 
-Create clusters you want to test. To be objective, each cluster should have the same number of members. The minimum number of members is six (6) due to the Redis minimum requirement of six (6) members per cluster with replicas of one (1).
+Let's create clusters that you want to test. To be objective, each cluster should have the same number of members. The minimum number of members is six (6) due to the Redis minimum requirement of six (6) members per cluster with replicas of one (1).
 
 ```bash
 # Add 4 to the default Coherence cluster
