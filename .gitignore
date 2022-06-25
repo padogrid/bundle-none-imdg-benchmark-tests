@@ -12,6 +12,9 @@ buildNumber.properties
 # vi
 *.swp
 
+# drawio
+*.drawio.bkp
+
 # PadoGrid workspace
 /.addonenv.sh
 /initenv.sh
