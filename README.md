@@ -6,6 +6,8 @@ This bundle provides step-by-step instructions for creating an local environment
 
 ![PadoGrid](https://github.com/padogrid/padogrid/raw/develop/images/padogrid-3d-16x16.png) [*Driven by PadoGrid*](https://github.com/padogrid)
 
+*This bundle must be installed as a workspace bundle.*
+
 ```bash
 install_bundle -download bundle-none-imdg-benchmkark-tests
 ```
@@ -14,7 +16,9 @@ install_bundle -download bundle-none-imdg-benchmkark-tests
 
 As of writing, PadoGrid supports four (4) IMDG products: Coherence, Geode/GemFire, Hazelcast, and Redis. This bundle creates a local environment in which you can conduct benchmark tests on all of these products. The test results will be consolidated in CSV files which you can analyze using your favorite spreadsheet application.
 
-PadoGrid is already equipped with a benchmark app called `perf_test`, with which let you create and run custom test cases without coding. Creating a test environment with `perf_test` is quite simple and straight forward. This bundle provides step-by-step instructions along with some useful test cases that you can run with `perf_test`.
+PadoGrid is already equipped with a benchmark app called `perf_test`, which let you create and run basic IMDG opertions test cases. This bundle provides step-by-step instructions for running the included test cases.
+
+:exclamation: *The test cases presented in this bundle are for comparing basic IMDG operations by running the `test_group` script included in `perf_test`. Although `perf_test` includes the transaction test scripts `test_ingestion` and `test_tx`, they are not meant for comparing products. For transaction tests, each product must be properly tuned to produce accurate results. Product tuning is out of scope for this bundle.*
 
 ![Benchmark Clusters](images/benchmark-clusters.png)
 
@@ -38,7 +42,9 @@ apps
 
 ## Configuring Bundle Envrionment
 
-Let's create clusters that you want to test. To be objective, each cluster should have the same number of members. The minimum number of members is six (6) due to the Redis minimum requirement of six (6) members per cluster with replicas of one (1).
+First, make sure you have all the IMDG products installed. You can install the OSS products using `install_padogrid`. For Coherence and GemFire, please follow the instructions in the [Additional Products](https://github.com/padogrid/padogrid/wiki/Quick-Start#additional-products) section of the [Quick Start](https://github.com/padogrid/padogrid/wiki/Quick-Start) page in the [PadoGrid Manual](https://github.com/padogrid/padogrid/wiki).
+
+Once you have the products installed, create four (4) clusters as shown below. To be objective, each cluster should have the same number of members. The minimum number of members is six (6) due to the Redis minimum requirement of six (6) members per cluster with one (1) replica. PadoGrid by default sets one (1) replica for all clusters.
 
 ```bash
 # Add 4 to the default Coherence cluster
@@ -59,95 +65,65 @@ make_cluster -product redis -cluster myredis
 
 ## Startup Sequence
 
+Assuming you will be conducting tests on your local machine, i.e., laptop, you will be conducting tests on one cluster at a time. For each cluster, you will be repeating the same three (3) steps: 1) start cluster, 2) run tests, 3) stop cluster. At the end of the last cluster tests, you will consolidate the test results.
+
 ### 1. Coherence
 
-- Start cluster
-
 ```bash
-switch_cluster -cluster mycoherence
+# 1. Start cluster
+switch_cluster mycoherence
 start_cluster
-```
 
-- Run `perf_test_coherence`
-
-```bash
-# Run test_group 5 times. Each run generates a file in results/.
+# 2. Run 'test_group' at least 5 times
 cd_app perf_test_coherence/bin_sh
 for i in $(seq 5); do ./test_group -run; done
-```
 
-- Stop cluster
-
-```bash
+# 3. Stop cluster
 stop_cluster
 ```
 
 ### 2. Geode/GemFire
 
-- Start cluster
-
 ```bash
-switch_cluster -cluster mygeode
+# 1. Start cluster
+switch_cluster mygeode
 start_cluster
-```
 
-- Run `perf_test_geode`
-
-```bash
-# Run test_group 5 times. Each run generates a file in results/.
+# 2. Run 'test_group' at least 5 times
 cd_app perf_test_geode/bin_sh
 for i in $(seq 5); do ./test_group -run; done
-```
 
-- Stop cluster
-
-```bash
-stop_cluster
+# 3. Stop cluster. '-all' to stop locator
+stop_cluster -all
 ```
 
 ### 3. Hazelcast
 
-- Start cluster
-
 ```bash
-switch_cluster -cluster myhz
+# 1. Start cluster
+switch_cluster myhz
 start_cluster
-```
 
-- Run `perf_test_hazelcast`
-
-```bash
-# Run test_group 5 times. Each run generates a file in results/.
+# 2. Run 'test_group' at least 5 times
 cd_app perf_test_hazelcast/bin_sh
 for i in $(seq 5); do ./test_group -run; done
-```
 
-- Stop cluster
-
-```bash
+# 3. Stop cluster
 stop_cluster
 ```
 
 ### 4. Redis
 
-- Start cluster
-
 ```bash
-switch_cluster -cluster myredis
+# 1. Start cluster
+switch_cluster myredis
 start_cluster
-```
 
-- Run `perf_test_geode`
-
-```bash
-# Run test_group 5 times. Each run generates a file in results/.
+# 2. Run 'test_group' at least 5 times
 cd_app perf_test_redis/bin_sh
 for i in $(seq 5); do ./test_group -run; done
-```
 
-- Stop cluster
-
-```bash
+# 3. Stop cluster
 stop_cluster
 ```
 
@@ -171,6 +147,18 @@ Output:
 # macOS
 open /....
 ```
+
+## Test Results Analysis
+
+The author conducted the tests on macOS with the following configuration:
+
+- macOS Monterey
+- Version 12.3.1 (21E258)
+- MacBook Pro (16-inch, 2019)
+- Processor 2.3 GHz 8-Core Intel Core i9
+- Memory 32 GB 2667 MHz DDR4
+
+The group test results show that Geode consistently outperforms the others. These tests take string keys and binary payloads.
 
 ## Teardown
 
