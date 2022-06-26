@@ -13,8 +13,9 @@
 # If the bunndle does not require a product, then set none=1.
 #
 
-geode=1
-coherence=14
-gemfire=9
-hazelcast=5
-redis=7
+none=1
+#geode=1
+#coherence=14
+#gemfire=9
+#hazelcast=5
+#redis=7
