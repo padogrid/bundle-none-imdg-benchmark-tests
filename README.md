@@ -16,7 +16,7 @@ install_bundle -download bundle-none-imdg-benchmkark-tests
 
 As of writing, PadoGrid supports four (4) IMDG products: Coherence, Geode/GemFire, Hazelcast, and Redis. This bundle creates a local environment in which you can conduct benchmark tests on all of these products. The test results will be consolidated in CSV files which you can analyze using your favorite spreadsheet application.
 
-PadoGrid is already equipped with a benchmark app called `perf_test`, which let you create and run basic IMDG opertions test cases. This bundle provides step-by-step instructions for running the included test cases.
+PadoGrid is already equipped with a performance test app called `perf_test`, which let you create and run basic IMDG opertions test cases. This bundle provides step-by-step instructions for running the included test cases.
 
 :exclamation: *The test cases presented in this bundle are for comparing basic IMDG operations by running the `test_group` script included in `perf_test`. Although `perf_test` includes the transaction test scripts `test_ingestion` and `test_tx`, they are not meant for comparing products. For transaction tests, each product must be properly tuned to produce accurate results. Product tuning is out of scope for this bundle.*
 
@@ -40,9 +40,92 @@ apps
 └── perf_test_redis
 ```
 
+## Hardware Requirements
+
+Each member in a cluster is configured with 1 GiB of max heap. There are a total of six (6) members per cluster.
+
+| Test              | Machine Count | Memory | Comment |
+| ----------------- | ------------- | ------ | ------- |
+| Single Machine    | 1             | 8 GiB of free memory | Run all tests on a single machine |
+| Multiple Machines | 7             | 1.5 GiB of free memory per machine | Geode/GemFire Locator and `perf_test` should be run on 7th machine |
+
+## Test Cases
+
+The test cases are defined in the `etc/group.properties` file in each of the `perf_test` directory.
+
+```console
+apps
+├── perf_test_coherence
+│   ├── bin_sh
+│   │   ├── create_csv
+│   │   └── test_group
+│   └── etc
+│       └── group.properties
+├── perf_test_geode
+│   ├── bin_sh
+│   │   ├── create_csv
+│   │   └── test_group
+│   └── etc
+│       └── group.properties
+├── perf_test_hazelcast
+│   ├── bin_sh
+│   │   ├── create_csv
+│   │   └── test_group
+│   └── etc
+│       └── group.properties
+└── perf_test_redis
+    ├── bin_sh
+    │   ├── create_csv
+    │   └── test_group
+    └── etc
+        └── group.properties
+```
+
+There are a total of 12 test cases, each invoking one of `put()`, `get()`, `putAll()`, and `getAll()` operations. Each test case is individually wrapped in a group. You can think of a group as a function invoking one or more operations. In our case, each group corresponds to a single operation. You can easily add more operations per group to simulate a use case workflow if needed.
+
+These groups are executed according to the `groupNames` property defined in each of the `etc/group.properties` file. 
+
+```properties
+groupNames=g1&g2,g3&g4,g5&g6,g7&g8
+```
+
+1. `g1` and `g2` are executed in parallel. 
+2. Upon completion of the previous step, `g3` and `g4` are executed in parallel.
+3. Upon completion of the previous step, `g5` and `g6` are executed in parallel.
+4. Upon completion of the previous step, `g7` and `g8` are executed in parallel.
+
+The following tables show `put`/`get` and `putAll`/`getAll` pairs created by the group definitions.
+
+### Group g1 - g4
+
+| Group | Test Case | Map  | Payload (bytes) | ThreadCount | TotalInvocationCount | TotalEntryCount |
+| ----- | --------- | ---- | --------------- | ----------- | -------------------- | --------------- |
+| g1    | put       | map1 | 1024            | 8           | 100,000              | 100,000         |
+| g2    | putall    | map2 | 1024            | 8           | 1000                 | 100,000         |
+| g3    | get       | map1 | 1024            | 8           | 100,000              | 100,000         |
+| g4    | getall    | map2 | 1024            | 8           | 10,000               | 100,000         |
+
+### Group g5 - g8
+
+| Group | Test Case | Map  | Payload (bytes) | ThreadCount | TotalInvocationCount | TotalEntryCount |
+| ----- | --------- | ---- | --------------- | ----------- | -------------------- | --------------- |
+| g5    | put       | map3 | 2048            | 8           | 100,000              | 50,000          |
+| g6    | putall    | map4 | 2048            | 8           | 1000                 | 50,000          |
+| g7    | get       | map3 | 2048            | 8           | 100,000              | 50,000          |
+| g8    | getall    | map4 | 2048            | 8           | 10,000               | 50,000          |
+
+### Group g9 - g12
+
+| Group | Test Case | Map  | Payload (bytes) | ThreadCount | TotalInvocationCount | TotalEntryCount |
+| ----- | --------- | ---- | --------------- | ----------- | -------------------- | --------------- |
+| g9    | put       | map5 | 10240           | 8           | 100,000              | 50,000          |
+| g10   | putall    | map6 | 10240           | 8           | 1000                 | 50,000          |
+| g11   | get       | map5 | 10240           | 8           | 100,000              | 50,000          |
+| g12   | getall    | map6 | 10240           | 8           | 10,000               | 50,000          |
+
 ## Configuring Bundle Envrionment
 
-First, make sure you have all the IMDG products installed. You can install the OSS products using `install_padogrid`. For Coherence and GemFire, please follow the instructions in the [Additional Products](https://github.com/padogrid/padogrid/wiki/Quick-Start#additional-products) section of the [Quick Start](https://github.com/padogrid/padogrid/wiki/Quick-Start) page in the [PadoGrid Manual](https://github.com/padogrid/padogrid/wiki).
+First, make sure you have all the IMDG products installed. You can install the OSS products using `install_padogrid`. For Coherence and GemFire, please follow the instructions in the [Additional Products](https://github.com/padogrid/padogrid/wiki/Quick-Start#additional-products) section of the [Quick Start](https://github.com/padogrid/padogrid/wiki/Quick-Start) page in the [PadoGrid Manual](https://github.com/padogrid/padogrid/wiki). If you decide to use Geode instead of GemFire then you can use `install_padogrid` to install Geode.
 
 Once you have the products installed, create four (4) clusters as shown below. To be objective, each cluster should have the same number of members. The minimum number of members is six (6) due to the Redis minimum requirement of six (6) members per cluster with one (1) replica. PadoGrid by default sets one (1) replica for all clusters.
 
