@@ -275,11 +275,11 @@ E Latency per invocation (msec): 0.0229
 Stop Time: Mon Jun 27 12:14:34 EDT 2022
 ```
 
-**Max Time** refers to the time of the thread that took the longest to complete. **Elasped Time** refers to the time it took for all of the threads to complete. The difference between **Max Time** and **Elapsed Time** is generally neglible. It becomes noticeable when there are too many threads competing for CPUs. You can tune your test environment by comparing these metrics. For accurate results, you want the difference to be as small as possible. You can adjust the thread count in the `etc/group.properties` file.
+**Max Time** refers to the elapsed time of the thread that took the longest to complete. **Elasped Time** refers to the time it took for all of the threads to complete. The difference between **Max Time** and **Elapsed Time** is generally neglible. It becomes noticeable when there are too many threads competing for CPUs. You can tune your test environment by comparing these metrics. For accurate results, you want the difference to be as small as possible. You can adjust the thread count in the `etc/group.properties` file.
 
 **M Throughput** and **M Latency** are calculated using **Max Time**. **E Throughput** and **E Latency** are calculated using **Elapsed Time**.
 
-If you executed `create_csv`, then all of the group files are consolidated in the form of CSV files. For group results, using your spreadheet application, you can sort by the following columns.
+If you executed `create_csv`, then all of the group files are consolidated in the form of CSV files. For group results, you can sort by the following columns as shown in the screenshot below.
 
 - Group
 - E Latency
