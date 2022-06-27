@@ -157,9 +157,9 @@ Assuming you will be conducting tests on your local machine, i.e., laptop, you w
 switch_cluster mycoherence
 start_cluster
 
-# 2. Run 'test_group' at least 5 times
+# 2. Run 'test_group' at least 3 times
 cd_app perf_test_coherence/bin_sh
-for i in $(seq 5); do ./test_group -run; done
+for i in $(seq 3); do ./test_group -run; done
 
 # 3. Stop cluster
 stop_cluster
@@ -172,9 +172,9 @@ stop_cluster
 switch_cluster mygeode
 start_cluster
 
-# 2. Run 'test_group' at least 5 times
+# 2. Run 'test_group' at least 3 times
 cd_app perf_test_geode/bin_sh
-for i in $(seq 5); do ./test_group -run; done
+for i in $(seq 3); do ./test_group -run; done
 
 # 3. Stop cluster. '-all' to stop locator
 stop_cluster -all
@@ -187,9 +187,9 @@ stop_cluster -all
 switch_cluster myhz
 start_cluster
 
-# 2. Run 'test_group' at least 5 times
+# 2. Run 'test_group' at least 3 times
 cd_app perf_test_hazelcast/bin_sh
-for i in $(seq 5); do ./test_group -run; done
+for i in $(seq 3); do ./test_group -run; done
 
 # 3. Stop cluster
 stop_cluster
@@ -202,11 +202,11 @@ stop_cluster
 switch_cluster myredis
 start_cluster
 
-# 2. Run 'test_group' at least 5 times.
+# 2. Run 'test_group' at least 3 times.
 cd_app perf_test_redis/bin_sh
 # Run build_app to download Redisson required by 'perf_test'
 ./build_app
-for i in $(seq 5); do ./test_group -run; done
+for i in $(seq 3); do ./test_group -run; done
 
 # 3. Stop cluster
 stop_cluster
@@ -221,30 +221,11 @@ cd_app perf_test_geode/bin_sh
 ./create_csv -all
 ```
 
-Output:
-
-```console
-[perf_test_coherence] Consolidating results...
-   + /Users/dpark/Padogrid/workspaces/rwe-test/bundle-none-imdg-benchmark-tests/apps/perf_test_coherence/results/results-group.csv
-
-[perf_test_geode] Consolidating results...
-   + /Users/dpark/Padogrid/workspaces/rwe-test/bundle-none-imdg-benchmark-tests/apps/perf_test_geode/results/results-group.csv
-
-[perf_test_hazelcast] Consolidating results...
-   + /Users/dpark/Padogrid/workspaces/rwe-test/bundle-none-imdg-benchmark-tests/apps/perf_test_hazelcast/results/results-group.csv
-
-[perf_test_redis] Consolidating results...
-   + /Users/dpark/Padogrid/workspaces/rwe-test/bundle-none-imdg-benchmark-tests/apps/perf_test_redis/results/results-group.csv
-
-[perf_test_geode] Consolidating all perf_test results...
-   + /Users/dpark/Padogrid/workspaces/rwe-test/bundle-none-imdg-benchmark-tests/apps/perf_test_geode/results/results-group-all.csv
-```
-
-- Open the consolidated CSV file in your spreadsheet application.
+The above command generates `etc/results-group-all.csv`. Open the consolidated CSV file with your spreadsheet application.
 
 ```bash
 # macOS
-open /Users/dpark/Padogrid/workspaces/rwe-test/bundle-none-imdg-benchmark-tests/apps/perf_test_geode/results/results-group-all.csv
+open ../etc/results-group-all.csv
 ```
 
 ## Test Results Analysis
