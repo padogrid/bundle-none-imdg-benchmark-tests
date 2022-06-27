@@ -86,39 +86,41 @@ There are a total of 12 test cases, each invoking one of `put()`, `get()`, `putA
 These groups are executed according to the `groupNames` property defined in each of the `etc/group.properties` file. 
 
 ```properties
-groupNames=g1&g2,g3&g4,g5&g6,g7&g8
+groupNames=g01&g02,g03&g04,g05&g06,g07&g08,g09&g10,g11&g12
 ```
 
-1. `g1` and `g2` are executed in parallel. 
-2. Upon completion of the previous step, `g3` and `g4` are executed in parallel.
-3. Upon completion of the previous step, `g5` and `g6` are executed in parallel.
-4. Upon completion of the previous step, `g7` and `g8` are executed in parallel.
+1. `g01` and `g02` are executed in parallel. 
+2. Upon completion of the previous step, `g03` and `g04` are executed in parallel.
+3. Upon completion of the previous step, `g05` and `g06` are executed in parallel.
+4. Upon completion of the previous step, `g07` and `g08` are executed in parallel.
+5. Upon completion of the previous step, `g09` and `g10` are executed in parallel.
+5. Upon completion of the previous step, `g11` and `g12` are executed in parallel.
 
 The following tables show `put`/`get` and `putAll`/`getAll` pairs created by the group definitions.
 
-### Group g1 - g4
+### Group g01 - g04
 
 | Group | Test Case | Map  | Payload (bytes) | ThreadCount | TotalInvocationCount | TotalEntryCount |
 | ----- | --------- | ---- | --------------- | ----------- | -------------------- | --------------- |
-| g1    | put       | map1 | 1024            | 8           | 100,000              | 100,000         |
-| g2    | putall    | map2 | 1024            | 8           | 1000                 | 100,000         |
-| g3    | get       | map1 | 1024            | 8           | 100,000              | 100,000         |
-| g4    | getall    | map2 | 1024            | 8           | 10,000               | 100,000         |
+| g01   | put       | map1 | 1024            | 8           | 100,000              | 100,000         |
+| g02   | putall    | map2 | 1024            | 8           | 1000                 | 100,000         |
+| g03   | get       | map1 | 1024            | 8           | 100,000              | 100,000         |
+| g04   | getall    | map2 | 1024            | 8           | 10,000               | 100,000         |
 
 ### Group g5 - g8
 
 | Group | Test Case | Map  | Payload (bytes) | ThreadCount | TotalInvocationCount | TotalEntryCount |
 | ----- | --------- | ---- | --------------- | ----------- | -------------------- | --------------- |
-| g5    | put       | map3 | 2048            | 8           | 100,000              | 50,000          |
-| g6    | putall    | map4 | 2048            | 8           | 1000                 | 50,000          |
-| g7    | get       | map3 | 2048            | 8           | 100,000              | 50,000          |
-| g8    | getall    | map4 | 2048            | 8           | 10,000               | 50,000          |
+| g05   | put       | map3 | 2048            | 8           | 100,000              | 50,000          |
+| g06   | putall    | map4 | 2048            | 8           | 1000                 | 50,000          |
+| g07   | get       | map3 | 2048            | 8           | 100,000              | 50,000          |
+| g08   | getall    | map4 | 2048            | 8           | 10,000               | 50,000          |
 
-### Group g9 - g12
+### Group g09 - g12
 
 | Group | Test Case | Map  | Payload (bytes) | ThreadCount | TotalInvocationCount | TotalEntryCount |
 | ----- | --------- | ---- | --------------- | ----------- | -------------------- | --------------- |
-| g9    | put       | map5 | 10240           | 8           | 100,000              | 50,000          |
+| g09   | put       | map5 | 10240           | 8           | 100,000              | 50,000          |
 | g10   | putall    | map6 | 10240           | 8           | 1000                 | 50,000          |
 | g11   | get       | map5 | 10240           | 8           | 100,000              | 50,000          |
 | g12   | getall    | map6 | 10240           | 8           | 10,000               | 50,000          |
