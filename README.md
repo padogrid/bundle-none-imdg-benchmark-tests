@@ -244,7 +244,7 @@ The above command generates `etc/results-group-all.csv`. Open the consolidated C
 open ../etc/results-group-all.csv
 ```
 
-## Test Results
+## Understanding Test Results
 
 The results files are generated in the `results` directory. Group files have the file name format of `group-<grouop-id>-product-yymmdd-HHmmss.txt`. The following shows the content of a typical group test results file.
 
