@@ -30,6 +30,15 @@ PadoGrid is already equipped with a workflow test app called `perf_test`, which 
 - Hazelcast 3.x, 4.x, 5.x
 - Redis 6.x, 7.x
 
+## Required Hardware
+
+Each member in a cluster is configured with 1 GiB of max heap. There are a total of six (6) members per cluster.
+
+| Test              | Machine Count | Memory | Comment |
+| ----------------- | ------------- | ------ | ------- |
+| Single Machine    | 1             | 8 GiB of free memory | Run all tests on a single machine |
+| Multiple Machines | 7             | 1.5 GiB of free memory per machine | Geode/GemFire Locator and `perf_test` should be run on 7th machine |
+
 ## Bundle Contents
 
 ```console
@@ -40,15 +49,6 @@ apps
 └── perf_test_redis
 ```
 
-## Required Hardware
-
-Each member in a cluster is configured with 1 GiB of max heap. There are a total of six (6) members per cluster.
-
-| Test              | Machine Count | Memory | Comment |
-| ----------------- | ------------- | ------ | ------- |
-| Single Machine    | 1             | 8 GiB of free memory | Run all tests on a single machine |
-| Multiple Machines | 7             | 1.5 GiB of free memory per machine | Geode/GemFire Locator and `perf_test` should be run on 7th machine |
-
 ## Test Cases
 
 The test cases are defined in the `etc/group.properties` file in each of the `perf_test` directory.
@@ -57,24 +57,28 @@ The test cases are defined in the `etc/group.properties` file in each of the `pe
 apps
 ├── perf_test_coherence
 │   ├── bin_sh
+│   │   ├── clean_results
 │   │   ├── create_csv
 │   │   └── test_group
 │   └── etc
 │       └── group.properties
 ├── perf_test_geode
 │   ├── bin_sh
+│   │   ├── clean_results
 │   │   ├── create_csv
 │   │   └── test_group
 │   └── etc
 │       └── group.properties
 ├── perf_test_hazelcast
 │   ├── bin_sh
+│   │   ├── clean_results
 │   │   ├── create_csv
 │   │   └── test_group
 │   └── etc
 │       └── group.properties
 └── perf_test_redis
     ├── bin_sh
+    │   ├── clean_results
     │   ├── create_csv
     │   └── test_group
     └── etc
