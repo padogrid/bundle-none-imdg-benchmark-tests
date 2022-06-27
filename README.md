@@ -152,7 +152,21 @@ make_cluster -product redis -cluster myredis
 
 Assuming you will be conducting tests on your local machine, i.e., laptop, you will be conducting tests on one cluster at a time. For each cluster, you will be repeating the same three (3) steps: 1) start cluster, 2) run tests, 3) stop cluster. At the end of the last cluster tests, you will consolidate the test results.
 
-### 1. Coherence
+### 0. Optional: Remove Previous Results
+
+If you have already run the tests and want to start fresh without the previously generated artifacts, then run the `clean_results -all` command.
+
+:exclamation: Make sure to backup any files that you want to keep before executing this command. It permanently removes files in the `results` directories.
+
+```bash
+# Change directory to any of the perf_test apps
+cd_app perf_test_geode/bin_sh
+
+# Remove all results files
+./clean_results -all
+```
+
+### 1. Test Coherence
 
 ```bash
 # 1. Start cluster
@@ -167,7 +181,7 @@ for i in $(seq 3); do ./test_group -run; done
 stop_cluster
 ```
 
-### 2. Geode/GemFire
+### 2. Test Geode/GemFire
 
 ```bash
 # 1. Start cluster
@@ -182,7 +196,7 @@ for i in $(seq 3); do ./test_group -run; done
 stop_cluster -all
 ```
 
-### 3. Hazelcast
+### 3. Test Hazelcast
 
 ```bash
 # 1. Start cluster
@@ -197,7 +211,7 @@ for i in $(seq 3); do ./test_group -run; done
 stop_cluster
 ```
 
-### 4. Redis
+### 4. Test Redis
 
 ```bash
 # 1. Start cluster
