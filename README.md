@@ -1,6 +1,6 @@
-# IMDG Product Benchmart Tests
+# IMDG Product Benchmark Tests
 
-This bundle provides step-by-step instructions for creating an local environment and conducting benchmark tests on all the PadoGrid supported IMDG products using the `perf_test` app.
+This bundle provides step-by-step instructions for creating a test environment and conducting benchmark tests on IMDG products.
 
 ## Installing Bundle
 
@@ -9,16 +9,16 @@ This bundle provides step-by-step instructions for creating an local environment
 *This bundle must be installed as a workspace bundle.*
 
 ```bash
-install_bundle -download bundle-none-imdg-benchmkark-tests
+install_bundle -download bundle-none-imdg-benchmark-tests
 ```
 
 ## Use Case
 
-As of writing, PadoGrid supports four (4) IMDG products: Coherence, Geode/GemFire, Hazelcast, and Redis. This bundle creates a local environment in which you can conduct benchmark tests on all of these products. The test results will be consolidated in CSV files which you can analyze using your favorite spreadsheet application.
+As of writing, PadoGrid supports four (4) IMDG products: Coherence, Geode/GemFire, Hazelcast, and Redis. This bundle creates a test environment in which you can conduct benchmark tests on all of these products. The test results will be consolidated in CSV files which you can analyze using your favorite spreadsheet application.
 
-PadoGrid is already equipped with a performance test app called `perf_test`, which let you create and run basic IMDG opertions test cases. This bundle provides step-by-step instructions for running the included test cases.
+PadoGrid is already equipped with a workflow test app called `perf_test`, which allows you to create and run basic IMDG operations test cases. This bundle provides step-by-step instructions for running the included test cases.
 
-:exclamation: *The test cases presented in this bundle are for comparing basic IMDG operations by running the `test_group` script included in `perf_test`. Although `perf_test` includes the transaction test scripts `test_ingestion` and `test_tx`, they are not meant for comparing products. For transaction tests, each product must be properly tuned to produce accurate results. Product tuning is out of scope for this bundle.*
+:exclamation: *The test cases presented in this bundle are for comparing basic IMDG operations by running the `test_group` script included in the `perf_test` app. Although the `perf_test` app includes the transaction test scripts `test_ingestion` and `test_tx`, they are not meant for comparing products. For transaction tests, each product must be properly tuned to produce accurate results. Product tuning is out of scope for this bundle.*
 
 ![Benchmark Clusters](images/benchmark-clusters.png)
 
