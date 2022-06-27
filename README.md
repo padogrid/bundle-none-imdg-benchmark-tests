@@ -40,7 +40,7 @@ apps
 └── perf_test_redis
 ```
 
-## Hardware Requirements
+## Required Hardware
 
 Each member in a cluster is configured with 1 GiB of max heap. There are a total of six (6) members per cluster.
 
