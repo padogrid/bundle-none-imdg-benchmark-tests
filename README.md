@@ -228,7 +228,7 @@ for i in $(seq 3); do ./test_group -run; done
 stop_cluster
 ```
 
-### 5. Consolidate test results
+### 5. Consolidate Test Results
 
 - Change directory to any of the `perf_test` apps and run `create_csv -all`.
 
