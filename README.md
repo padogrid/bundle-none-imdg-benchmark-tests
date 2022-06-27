@@ -230,17 +230,61 @@ The above command generates `etc/results-group-all.csv`. Open the consolidated C
 open ../etc/results-group-all.csv
 ```
 
-## Test Results Analysis
+## Test Results
 
-The author conducted the tests on macOS with the following configuration:
+The results files are generated in the `results` directory. Group files have the file name format of `group-<grouop-id>-product-yymmdd-HHmmss.txt`. The following shows the content of a typical group test results file.
 
-- macOS Monterey
-- Version 12.3.1 (21E258)
-- MacBook Pro (16-inch, 2019)
-- Processor 2.3 GHz 8-Core Intel Core i9
-- Memory 32 GB 2667 MHz DDR4
+```console
+******************************************
+Group Test
+******************************************
 
-The group test results show that Geode consistently outperforms the others. These tests take string keys and binary payloads.
+                       Product: geode
+                         Group: g01
+           Concurrent Group(s): g01 & g02
+                       Comment: Region.put() test (1 KiB payload in map1)
+                    Operations: put1
+                Test Run Count: 1
+      Test Run Interval (msec): 0
+Total Invocation Count per Run: 100000
+                  Thread Count: 8
+   Invocation Count per Thread: 12500
+
+Start Time: Mon Jun 27 12:14:32 EDT 2022
+
+Actual Total Number of Invocations: 100000
+
+Time unit: msec
+   Thread 1: 2278
+   Thread 2: 2270
+   Thread 3: 2268
+   Thread 4: 2280
+   Thread 5: 2276
+   Thread 6: 2274
+   Thread 7: 2285
+   Thread 8: 2282
+
+                Max Time (msec): 2285
+            Elapsed Time (msec): 2289
+         Total Invocation Count: 100000
+ M Throughput (invocations/sec): 43763.6761
+M Latency per invocation (msec): 0.0228
+ E Throughput (invocations/sec): 43687.1997
+E Latency per invocation (msec): 0.0229
+
+Stop Time: Mon Jun 27 12:14:34 EDT 2022
+```
+
+**Max Time** refers to the time of the thread that took the longest to complete. **Elasped Time** refers to the time it took for all of the threads to complete. The difference between **Max Time** and **Elapsed Time** is generally neglible. It becomes noticeable when there are too many threads competing for CPUs. You can tune your test environment by comparing these metrics. For accurate results, you want the difference to be as small as possible. You can adjust the thread count in the `etc/group.properties` file.
+
+**M Throughput** and **M Latency** are calculated using **Max Time**. **E Throughput** and **E Latency** are calculated using **Elapsed Time**.
+
+If you executed `create_csv`, then all of the group files are consolidated in the form of CSV files. For group results, using your spreadheet application, you can sort by the following columns.
+
+- Group
+- E Latency
+
+![Spreadsheet](images/spreadsheet.png)
 
 ## Teardown
 
