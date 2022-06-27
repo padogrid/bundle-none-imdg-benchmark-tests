@@ -15,6 +15,9 @@ buildNumber.properties
 # drawio
 *.drawio.bkp
 
+# macOS
+*.DS_Store
+
 # vscode
 workspace.code-workspace
 
