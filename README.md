@@ -364,5 +364,5 @@ stop_workspace -all
 2. Geode/GemFire `perf_test`, https://github.com/padogrid/padogrid/wiki/Geode-perf_test-App
 3. Hazelcast `perf_test`, https://github.com/padogrid/padogrid/wiki/Hazelcast-perf_test-App
 4. Redis `perf_test`, https://github.com/padogrid/padogrid/wiki/Redis-perf_test-App
-5. Bundle Catalogs, *A complete list of online bundles*, https://github.com/padogrid/padogrid/wiki/Bundle-Catalogs
+5. Bundle Catalogs, *A complete list of public bundles*, https://github.com/padogrid/padogrid/wiki/Bundle-Catalogs
 
