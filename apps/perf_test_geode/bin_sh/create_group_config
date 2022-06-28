@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+
+# ========================================================================
+# Copyright (c) 2020-2022 Netcrest Technologies, LLC. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ========================================================================
+
+SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+. $SCRIPT_DIR/.addonenv.sh
+
+EXECUTABLE="`basename $0`"
+
+if [ "$HELP" == "true" ]; then
+cat <<EOF
+
+WORKSPACE
+   $PADOGRID_WORKSPACE
+
+NAME
+   $EXECUTABLE - Create the 'etc/group.properties' file
+
+SYNOPSIS
+   $EXECUTABLE [-all] [-?]
+
+DESCRIPTION
+   Creates the 'etc/group.properties' file using the 'etc/group-template.properties' file.
+
+   To apply 'etc/group-template.properties' to all 'perf_test' apps in the current workspace,
+   specify the '-all' option.
+
+OPTIONS
+   -all
+             Creates 'group.properties' for all 'perf_test' apps in the current workspace.
+
+EOF
+exit
+fi
+
+PRODUCT_LIST="coherence geode hazelcast redis"
+
+PERF_TEST_APPS=""
+if [ "$ALL" == "true" ]; then
+   ALL_APPS=$(list_apps)
+   for i in $ALL_APPS; do
+      PERF_TEST_APP_DIR="$PADOGRID_WORKSPACE/apps/$i"
+      if [ -d "$PERF_TEST_APP_DIR" ]; then
+         if [ -f "$PERF_TEST_APP_DIR/bin_sh/test_group" ] &&  [ -d "$PERF_TEST_APP_DIR/results" ]; then
+            PERF_TEST_APPS="$PERF_TEST_APPS $i"
+         fi
+      fi
+   done
+else
+   PERF_TEST_APPS=$(basename "$APP_DIR")
+fi
+
+function writeHeader 
+{
+   local FILE="$1"
+
+   echo "# -------------------------------------------------------------------------" > $FILE
+   echo "# DO NOT MODIFY THIS FILE." >> $FILE
+   echo "# This is file is geneated based on the group-template.properties file. All" >> $FILE
+   echo "# changes should be made in that file and regenerate this file by running" >> $FILE
+   echo "# the 'generate_group_config' script." >> $FILE
+   echo "# -------------------------------------------------------------------------" >> $FILE
+   echo "" >>  $FILE
+}
+
+echo ""
+TEMPLATE_FILE="$APP_DIR/etc/group-template.properties"
+for PERF_TEST_APP in $PERF_TEST_APPS; do
+   ETC_DIR="$APPS_DIR/$PERF_TEST_APP/etc"
+   IS_CREATED="false"
+   if  [ -f "$ETC_DIR/pof-config.xml" ]; then
+      # coherence
+      writeHeader "$ETC_DIR/group.properties"
+      sed -e 's/\${DATA_STRUCTURE}/NamedCache/g' -e 's/\${PRODUCT}/Coherence/g' $TEMPLATE_FILE >> $ETC_DIR/group.properties
+      IS_CREATED="true"
+   elif  [ -f "$ETC_DIR/client-gemfire.properties" ]; then
+      # geode
+      writeHeader "$ETC_DIR/group.properties"
+      sed -e 's/\${DATA_STRUCTURE}/Region/g' -e 's/\${PRODUCT}/Geode/g' $TEMPLATE_FILE >> $ETC_DIR/group.properties
+      IS_CREATED="true"
+   elif  [ -f "$ETC_DIR/hazelcast-client.xml" ]; then
+      # hazelcast
+      writeHeader "$ETC_DIR/group.properties"
+      sed -e 's/\${DATA_STRUCTURE}/IMap/g' -e 's/\${PRODUCT}/Hazelcast/g' $TEMPLATE_FILE >> $ETC_DIR/group.properties
+      IS_CREATED="true"
+   elif  [ -f "$ETC_DIR/redisson-client.yaml" ]; then
+      # redis
+      writeHeader "$ETC_DIR/group.properties"
+      sed -e 's/\${DATA_STRUCTURE}/RMap/g' -e 's/\${PRODUCT}/Redisson/g' $TEMPLATE_FILE >> $ETC_DIR/group.properties
+      IS_CREATED="true"
+   fi
+   if [ "$IS_CREATED" == "true" ]; then
+      echo "[$PERF_TEST_APP]"
+      echo "   + $ETC_DIR/group.properties"
+      if [ "$TEMPLATE_FILE" != "$ETC_DIR/group-template.properties" ]; then
+          cp "$TEMPLATE_FILE" "$ETC_DIR/group-template.properties"
+          echo "   + $ETC_DIR/group-template.properties"
+      fi
+      echo ""
+   fi
+done
