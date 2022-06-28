@@ -9,7 +9,7 @@ This bundle provides step-by-step instructions for creating a test environment a
 *This bundle must be installed as a workspace bundle.*
 
 ```bash
-install_bundle -download bundle-none-imdg-benchmark-tests
+install_bundle -download -workspace bundle-none-imdg-benchmark-tests
 ```
 
 ## Use Case
