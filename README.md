@@ -116,7 +116,7 @@ The following tables show `put`/`get` and `putAll`/`getAll` pairs created by the
 | g03   | get       | map1 | 1024            | 8           | 100,000              | 100,000         |
 | g04   | getall    | map2 | 1024            | 8           | 10,000               | 100,000         |
 
-### Group g5 - g8
+### Group g05 - g08
 
 | Group | Test Case | Map  | Payload (bytes) | ThreadCount | TotalInvocationCount | TotalEntryCount |
 | ----- | --------- | ---- | --------------- | ----------- | -------------------- | --------------- |
@@ -142,6 +142,32 @@ cd_app perf_test_geode/bin_sh
 ````
 
 :pencil2: Note that the above command synchronizes all of the `perf_test` apps by copying `etc/group-template.properties` in addition to generating `etc/group.properties`.
+
+### Data Classes
+
+The following table lists the data classes used by `test_group` (Click on *Blob* to see source code.)
+
+| Product        | Key    | Value  | Interface                                        |
+| -------------- | ------ | ------ | ------------------------------------------------ |
+| Coherence      | `String` | [`Blob`](https://github.com/padogrid/padogrid/blob/develop/coherence-addon-core/src/test/java/org/oracle/coherence/addon/test/perf/data/Blob.java) | `com.tangosol.io.pof.PortableObject` |
+| Geode/GemFire  | `String` | [`Blob`](https://github.com/padogrid/padogrid/blob/develop/geode-addon-core/src/test/java/org/apache/geode/addon/test/perf/data/Blob.java)   | `org.apache.geode.DataSerializable` |
+| Hazelcast      | `String` | [`Blob`](https://github.com/padogrid/padogrid/blob/develop/hazelcast-addon-core-5/src/test/java/org/hazelcast/addon/test/perf/data/Blob.java)   | `com.hazelcast.nio.serialization.DataSerializable` |
+| Redis          | `String` | [`Blob`](https://github.com/padogrid/padogrid/blob/develop/redisson-addon-core/src/test/java/org/redis/addon/test/perf/data/Blob.java) | `java.io.Externalizable` |
+
+### `Blob` Class Snippet
+
+The payload size is the byte array field size and the `map` field is always empty for our test cases.
+
+```java
+public class Blob implements DataSerializable
+{
+	private static final long serialVersionUID = 1L;
+
+	private byte[] blob;
+	private Map<Object, Object> map = new HashMap<Object, Object>(4);
+  ...
+}
+```
 
 ## Configuring Bundle Envrionment
 
