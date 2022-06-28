@@ -248,7 +248,7 @@ The above command generates `etc/results-group-all.csv`. Open the consolidated C
 
 ```bash
 # macOS
-open ../etc/results-group-all.csv
+open ../results/results-group-all.csv
 ```
 
 ## Understanding Test Results
