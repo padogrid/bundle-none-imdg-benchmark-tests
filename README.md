@@ -138,15 +138,18 @@ Once you have the products installed, create four (4) clusters as shown below. T
 ```bash
 # Add 4 to the default Coherence cluster
 make_cluster -product coherence -cluster mycoherence
-add_member -cluster mycoherence -count 4
+switch_cluster mycoherence
+add_member -count 4
 
 # Add 4 to the default Hazelcast cluster
 make_cluster -product hazelcast -cluster myhz
-add_member -cluster myhz -count 4
+switch_cluster myhz
+add_member -count 4
 
 # Add 4 to the default Geode/GemFire cluster
 make_cluster -product geode -cluster mygeode
-add_member -cluster mygeode -count 4
+switch_cluster mygeode
+add_member -count 4
 
 # The default Redis cluster in PadoGrid has 6 members
 make_cluster -product redis -cluster myredis
