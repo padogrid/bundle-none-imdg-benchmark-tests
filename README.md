@@ -8,8 +8,6 @@ This bundle provides step-by-step instructions for creating a test environment a
 
 ## Installing Bundle
 
-![PadoGrid](https://github.com/padogrid/padogrid/raw/develop/images/padogrid-3d-16x16.png) [*Driven by PadoGrid*](https://github.com/padogrid)
-
 *This bundle must be installed as a workspace bundle.*
 
 ```bash
