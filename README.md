@@ -171,7 +171,7 @@ public class Blob implements DataSerializable
 }
 ```
 
-## Configuring Bundle Envrionment
+## Configuring Bundle Environment
 
 First, make sure you have all the IMDG products installed. You can install the OSS products using `install_padogrid`. For Coherence and GemFire, please follow the instructions in the [Additional Products](https://github.com/padogrid/padogrid/wiki/Quick-Start#additional-products) section of the [Quick Start](https://github.com/padogrid/padogrid/wiki/Quick-Start) page in the [PadoGrid Manual](https://github.com/padogrid/padogrid/wiki). If you decide to use Geode instead of GemFire then you can use `install_padogrid` to install Geode.
 
