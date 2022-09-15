@@ -205,7 +205,7 @@ Assuming you will be conducting tests on your local machine, i.e., laptop, you w
 
 If you have already run the tests and want to start fresh without the previously generated artifacts, then run the `clean_results -all` command.
 
-:exclamation: Make sure to backup any files that you want to keep before executing this command. It permanently removes files in the `results` directories.
+:exclamation: Make sure to backup any files that you want to keep before executing this command. It permanently removes files in all of the `results` directories.
 
 ```bash
 # Change directory to any of the perf_test apps
