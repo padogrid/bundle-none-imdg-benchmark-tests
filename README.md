@@ -23,7 +23,7 @@ As of writing, PadoGrid supports four (4) IMDG products: Coherence, Geode/GemFir
 
 PadoGrid is already equipped with a workflow test app called `perf_test`, which allows you to create and run basic IMDG operations test cases. This bundle provides step-by-step instructions for running the included test cases.
 
-:exclamation: *The test cases presented in this bundle are for comparing basic IMDG operations by running the `test_group` script included in the `perf_test` app. Although the `perf_test` app includes the transaction test scripts `test_ingestion` and `test_tx`, they are not meant for comparing products. For transaction tests, each product must be properly tuned to produce accurate results. Product tuning is out of scope for this bundle.*
+:exclamation: *The test cases presented in this bundle are for comparing basic IMDG operations by running the `test_group` script included in the `perf_test` app. Although the `perf_test` app includes the transaction test scripts, `test_ingestion` and `test_tx`, they are not meant for comparing products. For transaction tests, each product must be properly tuned to produce accurate results. Product tuning is out of scope for this bundle.*
 
 ![Benchmark Clusters](images/benchmark-clusters.png)
 
@@ -230,8 +230,8 @@ start_cluster
 cd_app perf_test_coherence/bin_sh
 for i in $(seq 3); do ./test_group -run; done
 
-# 3. Stop cluster
-stop_cluster
+# 3. Kill cluster
+kill_cluster
 ```
 
 ### 2. Test Geode/GemFire
@@ -246,8 +246,8 @@ start_cluster
 cd_app perf_test_geode/bin_sh
 for i in $(seq 3); do ./test_group -run; done
 
-# 3. Stop cluster. '-all' to stop locator
-stop_cluster -all
+# 3. Kill cluster. '-all' to stop locator
+kill_cluster -all
 ```
 
 ### 3. Test Hazelcast
@@ -262,8 +262,8 @@ start_cluster
 cd_app perf_test_hazelcast/bin_sh
 for i in $(seq 3); do ./test_group -run; done
 
-# 3. Stop cluster
-stop_cluster
+# 3. Kill cluster
+kill_cluster
 ```
 
 ### 4. Test Redis
@@ -280,8 +280,8 @@ cd_app perf_test_redis/bin_sh
 ./build_app
 for i in $(seq 3); do ./test_group -run; done
 
-# 3. Stop cluster
-stop_cluster
+# 3. Kill cluster
+kill_cluster
 ```
 
 ### 5. Consolidate Test Results
@@ -293,7 +293,7 @@ cd_app perf_test_geode/bin_sh
 ./create_csv -all
 ```
 
-The above command generates `etc/results-group-all.csv`. Open the consolidated CSV file with your spreadsheet application.
+The above command generates `results/results-group-all.csv`. Open the consolidated CSV file with your spreadsheet application.
 
 ```bash
 # macOS
