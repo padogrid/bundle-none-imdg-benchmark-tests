@@ -29,7 +29,6 @@ PadoGrid is already equipped with a workflow test app called `perf_test`, which 
 
 ## Required Software
 
-- Padogrid 0.9.18+
 - Coherence 1.13.x, 1.14.x
 - Geode 1.x, GemFire 9.x
 - Hazelcast 3.x, 4.x, 5.x
